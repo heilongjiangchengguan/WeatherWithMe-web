@@ -9,7 +9,7 @@
 		<u-swipe-action :index="index" v-for="(cityData,index) in cityDatas" :key="cityData.id" :options="options" @click="click" >
 		  	    <view class="list"><p style="font-size:25px;display:inline-block;">{{cityDatas[index].city }}</P><div>{{cityDatas[index].tem }}C</div></br>空气 {{ cityDatas[index].aiq}}<div style="font-size: 15px;">{{ cityDatas[index].wea }}</div></view>
 		</u-swipe-action>
-			<u-toast ref="uToast" />
+		<u-toast ref="uToast" />
 	</view>
 </template>
 

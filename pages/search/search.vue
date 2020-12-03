@@ -1,7 +1,9 @@
 <template>
 	<view>
 		<view >
-		<u-input v-model="value" :type="type" :border="border"  placeholder="请输入需要查询的城市名" class="input"/>
+		<!-- <u-input v-model="value" type="text" :border="border"  placeholder="请选择需要查询的城市名" class="input"/> -->
+		<u-input v-model="value" type="select" :border="border"  placeholder="请选择需要查询的城市名" class="input" @click="show = true" />
+		<u-picker mode="region" v-model="show" :area-code='["13", "1303", "130304"]' @confirm="getRegion"></u-picker>
 		<u-button  class="button"  type="primary" @tap="cancel">添加</u-button>
 		</view>
 		<view style="visibility:hidden">伴我天气</view>
@@ -14,7 +16,7 @@
 						<button class="demo-layout" @click="chooseOne"  :class="{active:currentOne==1}">成都</button>
 					</u-col>
 					<u-col span="3">
-						<button class="demo-layout" @click="chooseTwo"   :class="{active:currentTwo==2}">涪城</button>
+						<button class="demo-layout" @click="chooseTwo"   :class="{active:currentTwo==2}">涪城区</button>
 					</u-col>
 					<u-col span="3">
 						<button class="demo-layout" @click="chooseThree"  :class="{active:currentThree==3}">哈尔滨</button>
@@ -101,8 +103,13 @@
 	export default {
 		data() {
 			return {
+				show: false,
+				params:{
+					province: true,
+					city: true,
+					area: true
+				},
 				value: '',
-				type: 'text',
 				border: true,
 				cityName:'',
 				currentOne:0,
@@ -126,7 +133,7 @@
 				}
 				for(var i=0;i<uni.getStorageSync('list').length;i++)
 				{
-				if(uni.getStorageSync('list')[i].city=='涪城')
+				if(uni.getStorageSync('list')[i].city=='涪城区')
 				{uni.setStorageSync('current2',2);break;}
 				else {uni.setStorageSync('current2',0)}
 				}
@@ -145,6 +152,10 @@
 			else {this.currentThree=3}
 		},
 		methods:{
+			getRegion(value) {
+				this.value = value.area.label;
+				console.log(value)
+			},
 			cancel(){
 				uni.redirectTo({
 					url:'/pages/city/city?cityName='+this.value,
@@ -161,7 +172,7 @@
 				this.currentTwo=2;
 				uni.setStorageSync('current2',2)
 				uni.redirectTo({
-				url:'/pages/city/city?cityName=涪城',
+				url:'/pages/city/city?cityName=涪城区',
 				})
 			},
 			chooseThree(){
